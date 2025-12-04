@@ -118,16 +118,17 @@ void imprime(Arvore * arvore){
 No * busca_AVL_rec(No * no, char* e){
 
 	if(no){
-		
-		if(strcmp(no->palavra->_palavra, e) == 0) return no;
-		if(strcmp(no->palavra->_palavra, e)) return busca_AVL_rec(no->esq, e);
+		if(strcmp(no->palavra->_palavra, e) == 0){
+			return no;
+		}
+		if(strcmp(no->palavra->_palavra, e) > 0) return busca_AVL_rec(no->esq, e);
 		return busca_AVL_rec(no->dir, e);
 	}
 
 	return NULL;
 }
 
-No * busca_AVL(Arvore * arvore, char* e){
+No* busca_AVL(Arvore * arvore, char* e){
 	
 	return busca_AVL_rec(arvore->raiz, e);
 }
@@ -293,7 +294,7 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 		ListaLinhas* linhasRaiz = raiz->palavra->linhas;
 		int linhaNovo = novo->palavra->linhas->list[0];
 		if(!busca_binaria(linhasRaiz->list, linhaNovo, 0, linhasRaiz->size)){
-			linhasRaiz->list = (int*)realloc(linhasRaiz->list, ++linhasRaiz->size);
+			linhasRaiz->list = (int*)realloc(linhasRaiz->list, sizeof(int)*(++linhasRaiz->size));
 			linhasRaiz->list[linhasRaiz->size-1] = linhaNovo;
 		}
 		raiz->palavra->ocorrencias++;

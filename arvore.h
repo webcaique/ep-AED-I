@@ -25,6 +25,11 @@ typedef struct _no {
 } No;
 
 typedef struct {
+    No* encontrado;
+    int num_comparacoes;
+} Return;
+
+typedef struct {
     No* raiz;
 } Arvore;
 

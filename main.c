@@ -41,9 +41,9 @@ int main(int argc, char ** argv){
 
 			copia_ponteiro_linha = linha;
 
-			linhas = (char**)realloc(linhas,sizeof(char*)*(contador_linha+1));
-			linhas[contador_linha] = (char*)malloc(sizeof(char)*(TAMANHO+1));
-			strcpy(linhas[contador_linha], linha);
+			// linhas = (char**)realloc(linhas,sizeof(char*)*(contador_linha+1));
+			// linhas[contador_linha] = (char*)malloc(sizeof(char)*(TAMANHO+1));
+			// strcpy(linhas[contador_linha], linha);
 
 
 			while( (palavra = strsep(&copia_ponteiro_linha, " /-")) ){
@@ -64,17 +64,17 @@ int main(int argc, char ** argv){
 
 				//printf("\t\t'%s'\n", palavra);
 
-				Palavra* novaPalavra = (Palavra*)malloc(sizeof(Palavra));
-				novaPalavra->_palavra = (char*)malloc(sizeof(char)*32);
-				strcpy(novaPalavra->_palavra, palavra);
-				novaPalavra->ocorrencias = 1;
-				novaPalavra->linhas = (ListaLinhas*)malloc(sizeof(ListaLinhas));
-				novaPalavra->linhas->list = (int*)malloc(sizeof(int));
+				// Palavra* novaPalavra = (Palavra*)malloc(sizeof(Palavra));
+				// novaPalavra->_palavra = (char*)malloc(sizeof(char)*32);
+				// strcpy(novaPalavra->_palavra, palavra);
+				// novaPalavra->ocorrencias = 1;
+				// novaPalavra->linhas = (ListaLinhas*)malloc(sizeof(ListaLinhas));
+				// novaPalavra->linhas->list = (int*)malloc(sizeof(int));
 
-				novaPalavra->linhas->list[0] = contador_linha;
-				novaPalavra->linhas->size = 1;
+				// novaPalavra->linhas->list[0] = contador_linha;
+				// novaPalavra->linhas->size = 1;
 
-				insere_AVL(arv, novaPalavra);
+				// insere_AVL(arv, novaPalavra);
 
 			}
 
@@ -84,8 +84,26 @@ int main(int argc, char ** argv){
 
 		printf(">>>>> Arquivo carregado!\n");
 
-		debug_on();
-		display(arv);
+
+
+		fclose(in);
+
+		char* buffer = (char*)malloc(sizeof(char)*128);
+		palavra = (char*)realloc(palavra, sizeof(char)*64);
+		char* cmd;
+		cmd = (char*)malloc(sizeof(char)*7);
+		while(TRUE) {
+
+			printf("> ");
+			scanf("%s", buffer);
+			if(strncmp(buffer,"busca", 5) == 0){
+				
+				continue;
+			}
+
+			if(strcmp("fim", buffer) == 0) break;
+			printf("Opcao invalida!\n");
+		}
 
 		return 0;
 	}
