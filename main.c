@@ -17,8 +17,6 @@ int main(int argc, char ** argv){
 	int contador_linha;
 	int i;
 
-	Arvore* arv = criar_arvore();
-
 	if(argc == 2) {
 
 		in = fopen(argv[1], "r");
@@ -64,17 +62,6 @@ int main(int argc, char ** argv){
 
 				//printf("\t\t'%s'\n", palavra);
 
-				Palavra* novaPalavra = (Palavra*)malloc(sizeof(Palavra));
-				novaPalavra->_palavra = (char*)malloc(sizeof(char)*32);
-				strcpy(novaPalavra->_palavra, palavra);
-				novaPalavra->ocorrencias = 1;
-				novaPalavra->linhas = (ListaLinhas*)malloc(sizeof(ListaLinhas));
-				novaPalavra->linhas->list = (int*)malloc(sizeof(int));
-
-				novaPalavra->linhas->list[0] = contador_linha;
-				novaPalavra->linhas->size = 1;
-
-				insere_AVL(arv, novaPalavra);
 
 			}
 
@@ -83,9 +70,6 @@ int main(int argc, char ** argv){
 		}
 
 		printf(">>>>> Arquivo carregado!\n");
-
-		debug_on();
-		display(arv);
 
 		return 0;
 	}
