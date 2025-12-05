@@ -40,7 +40,7 @@ int main(int argc, char ** argv){
 			copia_ponteiro_linha = linha;
 
 			linhas = (char**)realloc(linhas,sizeof(char*)*(contador_linha+1));
-			linhas[contador_linha] = (char*)malloc(sizeof(char)*(TAMANHO+1));
+			linhas[contador_linha] = (char*)malloc(sizeof(char)*(strlen(linha)+1));
 			strcpy(linhas[contador_linha], linha);
 
 
