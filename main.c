@@ -9,7 +9,7 @@
 int main(int argc, char ** argv){
 
 	FILE * in;
-	char** linhas;
+	char** linhas = NULL;
 	char * linha;
 	char * copia_ponteiro_linha;
 	char * quebra_de_linha;
@@ -41,9 +41,9 @@ int main(int argc, char ** argv){
 
 			copia_ponteiro_linha = linha;
 
-			// linhas = (char**)realloc(linhas,sizeof(char*)*(contador_linha+1));
-			// linhas[contador_linha] = (char*)malloc(sizeof(char)*(TAMANHO+1));
-			// strcpy(linhas[contador_linha], linha);
+			linhas = (char**)realloc(linhas,sizeof(char*)*(contador_linha+1));
+			linhas[contador_linha] = (char*)malloc(sizeof(char)*(((int)strlen(linha))+1));
+			strcpy(linhas[contador_linha], linha);
 
 
 			while( (palavra = strsep(&copia_ponteiro_linha, " /-")) ){
@@ -62,19 +62,18 @@ int main(int argc, char ** argv){
 				// substring dentro da string 'linha', e a cada nova linha lida
 				// o conteúdo da linha anterior é sobreescrito.
 
-				//printf("\t\t'%s'\n", palavra);
+				printf("\t\t'%s'\n", palavra);
 
-				// Palavra* novaPalavra = (Palavra*)malloc(sizeof(Palavra));
-				// novaPalavra->_palavra = (char*)malloc(sizeof(char)*32);
-				// strcpy(novaPalavra->_palavra, palavra);
-				// novaPalavra->ocorrencias = 1;
-				// novaPalavra->linhas = (ListaLinhas*)malloc(sizeof(ListaLinhas));
-				// novaPalavra->linhas->list = (int*)malloc(sizeof(int));
+				Palavra* pal = (Palavra*)malloc(((int)sizeof(Palavra)));
+				pal->_palavra = (char*)malloc(((int)sizeof(char)*((int)strlen(palavra)+1)));
+				strcpy(pal->_palavra, palavra);
+				pal->linhas = (ListaLinhas*)malloc(((int)sizeof(ListaLinhas)));
+				pal->linhas->list = (int*)malloc(((int)sizeof(int)));
+				pal->linhas->list[0] = contador_linha;
+				pal->linhas->size = 1; 
+				pal->ocorrencias = 1;
 
-				// novaPalavra->linhas->list[0] = contador_linha;
-				// novaPalavra->linhas->size = 1;
-
-				// insere_AVL(arv, novaPalavra);
+				insere_AVL(arv, pal);
 
 			}
 
@@ -82,16 +81,19 @@ int main(int argc, char ** argv){
 
 		}
 
+		free(linha);
+		free(copia_ponteiro_linha);
+		free(palavra);
+
 		printf(">>>>> Arquivo carregado!\n");
-
-
 
 		fclose(in);
 
+		imprime(arv);
+
 		char* buffer = (char*)malloc(sizeof(char)*128);
-		palavra = (char*)realloc(palavra, sizeof(char)*64);
-		char* cmd;
-		cmd = (char*)malloc(sizeof(char)*7);
+		palavra = (char*)realloc(palavra, sizeof(char)*32);
+		char* player = (char*)malloc(((int)sizeof(char))*16);
 		while(TRUE) {
 
 			printf("> ");

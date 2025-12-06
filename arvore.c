@@ -4,87 +4,6 @@
 #include <math.h>
 #include "arvore.h"
 
-//--------------- PRINT AVANÇADO --------------------------//
-
-
-Boolean __debug__ = FALSE;
-void debug_on() { __debug__ = TRUE; }
-void debug_off() { __debug__ = FALSE; }
-
-#define ROWS 256
-#define COLS 4096
-
-int balanco(No * no);
-
-int display_rec(char ** buffer, No * no, int level, double h_position){
-
-	char * ptr;
-	int i, col, a, b;
-	double offset;
-
-	if(no){
-		col = (int)(h_position * COLS);
-		offset = 1.0 / pow(2, level + 2);
-
-		ptr = buffer[1 + level * 3] + col;
-		sprintf(ptr, "%s %d (%d)", no->palavra->_palavra, no->palavra->ocorrencias, balanco(no));
-		*(ptr + strlen(ptr)) = ' ';
-
-		if(no->esq || no->dir) *(buffer[2 + level * 3] + col + 1) = '|';
-
-		if(no->esq){
-		
-			i = (int)((h_position - offset) * COLS);
-			*(buffer[3 + level * 3] + 1 + i) = '|';
-			i++;
-			for(; i <= col; i++) *(buffer[3 + level * 3] + 1 + i) = '-';
-		}
-		
-		if(no->dir){
-
-			for(i = col; i < (int)((h_position + offset) * COLS); i++) *(buffer[3 + level * 3] + 1 + i) = '-';
-			*(buffer[3 + level * 3] + 1 + i) = '|';
-		}
-
-		a = display_rec(buffer, no->esq, level + 1, h_position - offset);
-		b = display_rec(buffer, no->dir, level + 1, h_position + offset);
-
-		if(a > b) return a;
-		return b;
-	}
-
-	return level;
-}
-
-void display_no(No * no){
-
-	int i, j, r;
-
-	char ** buffer = (char **) malloc(ROWS * sizeof(char *));
-
-	for(i = 0; i < ROWS; i++) {
-
-		buffer[i] = (char *) malloc((COLS + 1) * sizeof(char));
-
-		for(j = 0; j < COLS; j++) buffer[i][j] = ' ';
-		buffer[i][j] = '\0';
-	}
-
-	FILE* file = freopen("arquivo.out", "w", stdout);
-
-	r = display_rec(buffer, no, 0, 0.5);
-
-	if(__debug__) getchar();
-
-	for(i = 0; i < 3 * r; i++) printf("%s\n", buffer[i]);
-	printf("-----------------------------------------------------------------------------------------------\n");
-}
-
-void display(Arvore * arvore){
-
-	display_no(arvore->raiz);
-}
-
 //------------------ Criação da árvore ------------------//
 Arvore* criar_arvore(){
     Arvore* arv = (Arvore*)malloc(sizeof(Arvore));
@@ -233,8 +152,9 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 
 	Boolean r;
 	No * rot;
-	
+
 	if(strcmp(novo->palavra->_palavra, raiz->palavra->_palavra) != 0){
+
 		if(strcmp(novo->palavra->_palavra, raiz->palavra->_palavra) < 0){
 
 			if(raiz->esq){
@@ -242,9 +162,7 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 				r = insere_AVL_rec(arvore, raiz->esq, raiz, novo);
 				atualiza_altura(raiz);
 			
-				if(abs(balanco(raiz)) >= 2) {
-
-					printf("No %s desbalanceado! h = %d, bal = %d\n", raiz->palavra->_palavra, raiz->altura, balanco(raiz));
+				if(abs(balanco(raiz)) >= 2) {	
 
 					rot = rotacaoL(raiz);
 
@@ -270,8 +188,6 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 			
 				if(abs(balanco(raiz)) >= 2){
 
-					printf("No %s desbalanceado! h = %d, bal = %d\n", raiz->palavra->_palavra, raiz->altura, balanco(raiz));
-
 					rot = rotacaoR(raiz);
 
 					if(pai){
@@ -290,14 +206,19 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 		}
 	
 		return TRUE;
-	} else {
-		ListaLinhas* linhasRaiz = raiz->palavra->linhas;
-		int linhaNovo = novo->palavra->linhas->list[0];
-		if(!busca_binaria(linhasRaiz->list, linhaNovo, 0, linhasRaiz->size)){
-			linhasRaiz->list = (int*)realloc(linhasRaiz->list, sizeof(int)*(++linhasRaiz->size));
-			linhasRaiz->list[linhasRaiz->size-1] = linhaNovo;
+	}
+	else {
+		if(!busca_binaria(raiz->palavra->linhas->list, novo->palavra->linhas->list[0], 0, raiz->palavra->linhas->size)){
+			(raiz->palavra->linhas->size)++;
+			raiz->palavra->linhas->list = (int*)realloc(raiz->palavra->linhas->list, ((int)sizeof(int))*(raiz->palavra->linhas->size));
+			raiz->palavra->linhas->list[(raiz->palavra->linhas->size)-1] = novo->palavra->linhas->list[0];
 		}
-		raiz->palavra->ocorrencias++;
+		(raiz->palavra->ocorrencias)++;
+		free(novo->palavra->linhas->list);
+		free(novo->palavra->linhas);
+		free(novo->palavra->_palavra);
+		free(novo->palavra);
+		free(novo);
 	}
 
 	return FALSE;
@@ -306,10 +227,11 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 Boolean insere_AVL(Arvore * arvore, Palavra* e){
 
 	No * novo = (No *) malloc(sizeof(No));
-	
+
 	novo->palavra = e;
-	novo->esq = novo->dir = NULL;
 	novo->altura = 0;
+	novo->dir = NULL;
+	novo->esq = NULL;
 
 	if(arvore->raiz) return insere_AVL_rec(arvore, arvore->raiz, NULL, novo);
 		

@@ -23,12 +23,6 @@ typedef struct _no {
     struct _no* esq;
     struct _no* dir;
 } No;
-
-typedef struct {
-    No* encontrado;
-    int num_comparacoes;
-} Return;
-
 typedef struct {
     No* raiz;
 } Arvore;
@@ -37,6 +31,3 @@ Arvore* criar_arvore();
 Boolean insere_AVL(Arvore * arvore, Palavra* e);
 No * busca_AVL(Arvore * arvore, char* e);
 void imprime(Arvore * arvore);
-void display(Arvore * arvore);
-void debug_on();
-void debug_off();
