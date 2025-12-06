@@ -32,26 +32,6 @@ void imprime(Arvore * arvore){
 	printf("\n");
 }
 
-
-//------------------ Busca ------------------//
-No * busca_AVL_rec(No * no, char* e){
-
-	if(no){
-		if(strcmp(no->palavra->_palavra, e) == 0){
-			return no;
-		}
-		if(strcmp(no->palavra->_palavra, e) > 0) return busca_AVL_rec(no->esq, e);
-		return busca_AVL_rec(no->dir, e);
-	}
-
-	return NULL;
-}
-
-No* busca_AVL(Arvore * arvore, char* e){
-	
-	return busca_AVL_rec(arvore->raiz, e);
-}
-
 //--------------- Balanço --------------------//
 int max(int a, int b){
 
