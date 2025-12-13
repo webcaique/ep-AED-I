@@ -190,14 +190,6 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 		}
 	
 		return TRUE;
-	} else {
-		ListaLinhas* linhasRaiz = raiz->palavra->linhas;
-		int linhaNovo = novo->palavra->linhas->list[0];
-		if(!busca_binaria(linhasRaiz->list, linhaNovo, 0, linhasRaiz->size)){
-			linhasRaiz->list = (int*)realloc(linhasRaiz->list, ++linhasRaiz->size);
-			linhasRaiz->list[linhasRaiz->size-1] = linhaNovo;
-		}
-		raiz->palavra->ocorrencias++;
 	}
 
 	return FALSE;
