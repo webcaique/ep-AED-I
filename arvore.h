@@ -17,6 +17,7 @@ typedef struct _no {
     struct _no* esq;
     struct _no* dir;
 } No;
+
 typedef struct {
     No* raiz;
 } Arvore;

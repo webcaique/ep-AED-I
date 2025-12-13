@@ -74,10 +74,11 @@ int main(int argc, char ** argv){
 				pal->linhas = (ListaLinhas*)malloc(((int)sizeof(ListaLinhas)));
 				pal->linhas->list = (int*)malloc(((int)sizeof(int)));
 				pal->linhas->list[0] = contador_linha;
-				pal->linhas->size = 1; 
+				pal->linhas->size = 1;
 				pal->ocorrencias = 1;
 
 				insere_AVL(arv, pal);
+				
 
 			}
 

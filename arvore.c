@@ -194,6 +194,7 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 			raiz->palavra->linhas->list[(raiz->palavra->linhas->size)-1] = novo->palavra->linhas->list[0];
 		}
 		(raiz->palavra->ocorrencias)++;
+
 		free(novo->palavra->linhas->list);
 		free(novo->palavra->linhas);
 		free(novo->palavra->_palavra);
