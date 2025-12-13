@@ -21,7 +21,7 @@ CC_FLAGS = -c        \
 		
 # Compilação e links dos objetos com os arquivos c
 
-all: $(PROJ_NAME)
+all: $(PROJ_NAME) clean
 
 $(PROJ_NAME): $(OBJ)
 	$(CC) -o $@ $^
@@ -31,3 +31,6 @@ $(PROJ_NAME): $(OBJ)
 
 main.o: main.c $(H_SOURCE)
 	$(CC) -o $@ $< $(CC_FLAGS)
+
+clean:
+	rm *.o
