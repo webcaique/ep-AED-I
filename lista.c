@@ -20,12 +20,13 @@ void destroi_lista(ListaSequencial * lista){
 int busca(ListaSequencial * lista, Palavra* e){
 
 	int i;
+	// uasr i para contador de comparações
 	for(i = 0; i < lista->tamanho; i++){
 
 		if(strcmp(lista->array[i]->_palavra, e->_palavra) == 0) return i;
 	}
 
-	return -1;
+	return -1; // caso não ache, usar o tamanho para indicar a quantidade de comparações
 }
 
 Boolean insere_lista(ListaSequencial * lista, Palavra* e){
