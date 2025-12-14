@@ -25,7 +25,7 @@ int main(int argc, char ** argv){
 
 	Arvore* arv = criar_arvore();
 
-	if(argc == 2) {
+	if(argc == 3) {
 
 		in = fopen(argv[1], "r"); // Abri o arquivo para leitura
 
@@ -82,11 +82,11 @@ int main(int argc, char ** argv){
 				pal->linhas->size = 1;
 				pal->ocorrencias = 1;
 
-				insere_AVL(arv, pal);
-				
-
-				
-				insere_lista(lista,pal);
+				if(strcmp(argv[2], "lista") == 0){
+					insere_lista(lista,pal);
+				} else if(strcmp(argv[2], "arvore") == 0){
+					insere_AVL(arv, pal);
+				}
 			}
 
 			contador_linha++;

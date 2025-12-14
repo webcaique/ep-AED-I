@@ -1,20 +1,8 @@
+#include "defines.h"
+
 #define FALSE 0
 #define TRUE 1
 
-typedef int Boolean;
-typedef int Elemento;
-
-typedef struct {
-    int* list;
-    int size;
-} ListaLinhas;
-
-typedef struct {
-    char* _palavra;
-    ListaLinhas* linhas;
-    int ocorrencias;
-} Palavra;
-	
 typedef struct {
 
 	Palavra** array;
