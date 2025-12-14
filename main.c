@@ -107,6 +107,8 @@ int main(int argc, char ** argv){
 		// Armazena o comando a ser digitado pelo usuário ("busca", "fim")
 		char* cmd = (char*)malloc(sizeof(char)*6);
 		// controlador de índice
+
+		int num_comparacoes = 0;		
 		
 		while(TRUE) {
 			

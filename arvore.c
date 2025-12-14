@@ -245,18 +245,18 @@ Boolean insere_AVL(Arvore * arvore, Palavra* e){
 	return TRUE;
 }
 
-No * busca_AVL_rec(No * no, char * e){
+No * busca_AVL_rec(No * no, char * e, int* num_comparacoes){
 	if(no){
-
+		(*num_comparacoes)++;
 		if(!strcmp(no->palavra->_palavra, e)) return no;
-		if(strcmp(no->palavra->_palavra, e) < 0) return busca_AVL_rec(no->esq, e);
-		return busca_AVL_rec(no->dir, e);
+		if(strcmp(no->palavra->_palavra, e) < 0) return busca_AVL_rec(no->esq, e, num_comparacoes);
+		return busca_AVL_rec(no->dir, e, num_comparacoes);
 	}
 
 	return NULL;
 }
 
-No * busca_AVL(Arvore * arvore, char * e){
+No * busca_AVL(Arvore * arvore, char * e, int* num_comparacoes){
 	//conversao para minuscula
 	int i = 0;
 	while(e[i] != '\0'){
@@ -264,5 +264,5 @@ No * busca_AVL(Arvore * arvore, char * e){
 		i++;
 	}
 	//primeira chamada da recursiva
-	return busca_AVL_rec(arvore->raiz, e);
+	return busca_AVL_rec(arvore->raiz, e, num_comparacoes);
 }
