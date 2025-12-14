@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "arvore.h"
+//#include "arvore.h"
 #include "lista.h"
 
 #define TAMANHO 10000
@@ -76,7 +76,7 @@ int main(int argc, char ** argv){
 
 
 				
-				insere_lista(lista,e);
+				insere_lista(lista,pal);
 			}
 
 			contador_linha++;
