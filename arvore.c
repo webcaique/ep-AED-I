@@ -188,6 +188,30 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 		return TRUE;
 	}
 	else {
+		/*
+				_palavra = golfe
+				linhas
+				 list = [1,2, 4]
+				 size = 3
+				ocorrencias =>3
+
+				_palavra = golfe
+				linhas
+				 list = [4]
+				 size = 1
+				ocorrencias =>1
+		 */
+		/*
+		raiz => a nó;
+		raiz->palavra => estrutra Palavra
+		raiz->palavra->linhas => a estruturas ListaLinhas
+		raiz->palavra->linhas->list => o vetor que vai armazenar as linhas em que a palavra aparece
+		*/
+		/*
+		raiz->palavra->linhas->list => lista das linhas que a palavra apareceu
+		novo->palavra->linhas->list[0] => a linha onde a palavra foi encontrada denovo
+		0, raiz->palavra->linhas->size => início e fim da lista das linhas (tamanho), respectivamente
+		*/
 		if(!busca_binaria(raiz->palavra->linhas->list, novo->palavra->linhas->list[0], 0, raiz->palavra->linhas->size)){
 			(raiz->palavra->linhas->size)++;
 			raiz->palavra->linhas->list = (int*)realloc(raiz->palavra->linhas->list, ((int)sizeof(int))*(raiz->palavra->linhas->size));

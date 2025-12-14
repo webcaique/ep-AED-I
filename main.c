@@ -9,8 +9,10 @@
 
 int main(int argc, char ** argv){
 
-	FILE * in;
 	char** linhas = NULL;
+	
+	
+	FILE * in;
 	char * linha;
 	char * copia_ponteiro_linha;
 	char * quebra_de_linha;
@@ -53,7 +55,7 @@ int main(int argc, char ** argv){
 			strcpy(linhas[contador_linha], linha);
 
 			// Irá ignorar barra(/) e travessão(-) no começo da cópia
-			while( (palavra = strsep(&copia_ponteiro_linha, " /-.,")) ){
+			while( (palavra = strsep(&copia_ponteiro_linha, " /.-,")) ){
 				// caso termine em um espaço em branco, ele volta o loop para a próxima palavra
 				if(strcmp(palavra, "") == 0) continue;
 
@@ -96,13 +98,14 @@ int main(int argc, char ** argv){
 
 		// buffer que vai armazenar todo a frase que o usário digitar
 		char* buffer = (char*)malloc(sizeof(char)*128);
+		// busca algo
 
 		palavra = (char*)malloc(sizeof(char)*32);
 		
 		// Armazena o comando a ser digitado pelo usuário ("busca", "fim")
 		char* cmd = (char*)malloc(sizeof(char)*6);
 		// controlador de índice
-		int i;
+		
 		while(TRUE) {
 			
 			printf("> ");
@@ -111,6 +114,7 @@ int main(int argc, char ** argv){
 			buffer[i] = '\0';
 			sscanf(buffer, "%s %s", cmd, palavra);
 			if(strcmp(cmd, "busca") == 0){
+				
 				continue;
 			}
 
