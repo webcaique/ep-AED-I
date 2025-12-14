@@ -4,6 +4,8 @@
 #include <math.h>
 #include "defines.h"
 #include "arvore.h"
+//#include "arvore.h"
+#include "lista.h"
 
 #define TAMANHO 10000
 
@@ -19,6 +21,7 @@ int main(int argc, char ** argv){
 	char * palavra;
 	int contador_linha;
 	int i;
+	
 
 	Arvore* arv = criar_arvore();
 
@@ -27,8 +30,9 @@ int main(int argc, char ** argv){
 		in = fopen(argv[1], "r"); // Abri o arquivo para leitura
 
 
-		contador_linha = 0; // inicializa o contado de linhas
- 		linha = (char *) malloc((TAMANHO + 1) * sizeof(char)); // define o tamanho da "linha"
+		contador_linha = 0;
+ 		linha = (char *) malloc((TAMANHO + 1) * sizeof(char));
+		ListaSequencial* lista = cria_lista();
 
 		// Laço vai executar até ler todo o arquivo, em que vai passar cada linha na variável "linha"
 		while(in && fgets(linha, TAMANHO, in)){
@@ -81,6 +85,8 @@ int main(int argc, char ** argv){
 				insere_AVL(arv, pal);
 				
 
+				
+				insere_lista(lista,pal);
 			}
 
 			contador_linha++;
@@ -137,6 +143,7 @@ int main(int argc, char ** argv){
 
 		return 0;
 	}
+
 
 	return 1;
 }
