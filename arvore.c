@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <ctype.h>
 #include "arvore.h"
 
 //------------------ Criação da árvore ------------------//
@@ -242,4 +243,26 @@ Boolean insere_AVL(Arvore * arvore, Palavra* e){
 		
 	arvore->raiz = novo;
 	return TRUE;
+}
+
+No * busca_AVL_rec(No * no, char * e){
+	if(no){
+
+		if(!strcmp(no->palavra->_palavra, e)) return no;
+		if(strcmp(no->palavra->_palavra, e) < 0) return busca_AVL_rec(no->esq, e);
+		return busca_AVL_rec(no->dir, e);
+	}
+
+	return NULL;
+}
+
+No * busca_AVL(Arvore * arvore, char * e){
+	//conversao para minuscula
+	int i = 0;
+	while(e[i] != '\0'){
+		e[i] = tolower(e[i]);
+		i++;
+	}
+	//primeira chamada da recursiva
+	return busca_AVL_rec(arvore->raiz, e);
 }

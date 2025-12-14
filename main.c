@@ -60,7 +60,9 @@ int main(int argc, char ** argv){
 				if(strcmp(palavra, "") == 0) continue;
 
 				// Caso encontre a primeira letra em caixa alta, ela é reformatada para caixa baixa
-				if((int)palavra[0] < 91) palavra[0] += 32;
+				for(int i = 0; palavra[i] != '\0'; i++){
+					if((int)palavra[i] < 91) palavra[i] += 32;
+				}
 
 				// antes de guardar a palavra em algum tipo de estrutura usada
 				// para implementar o índice, será necessário fazer uma copia
