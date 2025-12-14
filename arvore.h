@@ -28,3 +28,5 @@ typedef struct {
 
 Arvore* criar_arvore();
 Boolean insere_AVL(Arvore * arvore, Palavra* e);
+No * busca_AVL_rec(No * no, char * e);
+No * busca_AVL(Arvore * arvore, char * e);
