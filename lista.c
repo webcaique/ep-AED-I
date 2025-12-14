@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "lista.h"
 
 ListaSequencial * cria_lista(){
 	
 	ListaSequencial * lista =  (ListaSequencial *) malloc (sizeof(ListaSequencial));
-	lista->livre = 0;
+	lista->tamanho = 0;
 
 	return lista;
 }
@@ -15,74 +16,42 @@ void destroi_lista(ListaSequencial * lista){
 	free(lista);
 }
 
-int tamanho(ListaSequencial * lista){
 
-	return lista->livre;
-}
-
-void imprime(ListaSequencial * lista){
+int busca(ListaSequencial * lista, Palavra* e){
 
 	int i;
 
-	printf("Lista:");
+	for(i = 0; i < lista->tamanho; i++){
 
-	for(i = 0; i < lista->livre; i++){
-
-		printf(" %d", lista->a[i]);
-	}
-
-	printf("\n");
-}
-
-int busca(ListaSequencial * lista, Elemento e){
-
-	int i;
-
-	for(i = 0; i < lista->livre; i++){
-
-		if(lista->a[i] == e) return i;
+		if(strcmp(lista->array[i]->_palavra, e->_palavra)) return i;
 	}
 
 	return -1;
 }
 
-Boolean insere(ListaSequencial * lista, Elemento e, int indice){
+Boolean insere_lista(ListaSequencial * lista, Palavra* e){
 
 	int i;
 
-	if(lista->livre < TAMANHO_MAXIMO && indice >= 0 && indice <= lista->livre){
-
-		for(i = lista->livre; i > indice; i--){
-
-			lista->a[i] = lista->a[i - 1];
+	if(i = busca(lista, e)){
+		if(lista->array[i]->linhas->list[lista->array[i]->linhas->size-1] < e->linhas->list[0]){
+			lista->array[i]->linhas->list = (int*)realloc(lista->array[i]->linhas->list, sizeof(int)*(lista->array[i]->linhas->size+1));
+			lista->array[i]->linhas->list[lista->array[i]->linhas->size] = e->linhas->list[0]; 	
+			lista->array[i]->linhas->size++;
 		}
-
-		lista->a[indice] = e;
-		lista->livre++;
-
+		lista->array[i]->ocorrencias++;
+		free(e->linhas->list);
+		free(e->linhas);
+		free(e -> _palavra);
+		free(e);
 		return TRUE;
 	}
+	
+	lista->tamanho++;
+	lista->array = (Palavra**)realloc(lista->array, sizeof(Palavra*)*lista->tamanho);
+	lista->array[lista->tamanho-1] = (Palavra*)malloc(sizeof(Palavra));
+	lista->array[lista->tamanho-1] = e;
 
+	
 	return FALSE;
 }
-
-Boolean remove_elemento(ListaSequencial * lista, Elemento e){
-
-	int i;
-	int indice = busca(lista, e);
-
-	if(indice >= 0) {
-
-		lista->livre--;
-
-		for(i = indice; i < lista->livre; i++){
-
-			lista->a[i] = lista->a[i + 1];
-		}
-
-		return TRUE;
-	}
-
-	return FALSE;
-}
-

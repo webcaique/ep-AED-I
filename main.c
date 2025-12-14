@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "arvore.h"
+#include "lista.h"
 
 #define TAMANHO 10000
 
@@ -16,6 +17,7 @@ int main(int argc, char ** argv){
 	char * palavra;
 	int contador_linha;
 	int i;
+	
 
 	if(argc == 2) {
 
@@ -25,6 +27,7 @@ int main(int argc, char ** argv){
 
 		contador_linha = 0;
  		linha = (char *) malloc((TAMANHO + 1) * sizeof(char));
+		ListaSequencial* lista = cria_lista();
 
 		while(in && fgets(linha, TAMANHO, in)){
 			
@@ -60,9 +63,20 @@ int main(int argc, char ** argv){
 				// substring dentro da string 'linha', e a cada nova linha lida
 				// o conteúdo da linha anterior é sobreescrito.
 
-				//printf("\t\t'%s'\n", palavra);
+				printf("\t\t'%s'\n", palavra);
+
+				Palavra* pal = (Palavra*)malloc(((int)sizeof(Palavra)));
+				pal->_palavra = (char*)malloc(((int)sizeof(char)*((int)strlen(palavra)+1)));
+				strcpy(pal->_palavra, palavra);
+				pal->linhas = (ListaLinhas*)malloc(((int)sizeof(ListaLinhas)));
+				pal->linhas->list = (int*)malloc(((int)sizeof(int)));
+				pal->linhas->list[0] = contador_linha;
+				pal->linhas->size = 1; 
+				pal->ocorrencias = 1;
 
 
+				
+				insere_lista(lista,e);
 			}
 
 			contador_linha++;
@@ -73,6 +87,7 @@ int main(int argc, char ** argv){
 
 		return 0;
 	}
+
 
 	return 1;
 }
