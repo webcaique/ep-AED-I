@@ -26,7 +26,6 @@ int main(int argc, char ** argv){
 
 		in = fopen(argv[1], "r"); // Abri o arquivo para leitura
 
-		printf(">>>>> Carregando arquivo...\n");
 
 		contador_linha = 0; // inicializa o contado de linhas
  		linha = (char *) malloc((TAMANHO + 1) * sizeof(char)); // define o tamanho da "linha"
@@ -70,8 +69,6 @@ int main(int argc, char ** argv){
 				// substring dentro da string 'linha', e a cada nova linha lida
 				// o conteúdo da linha anterior é sobreescrito.
 
-				printf("\t\t'%s'\n", palavra);
-
 				Palavra* pal = (Palavra*)malloc(((int)sizeof(Palavra)));
 				pal->_palavra = (char*)malloc(((int)sizeof(char)*((int)strlen(palavra)+1)));
 				strcpy(pal->_palavra, palavra);
@@ -89,6 +86,7 @@ int main(int argc, char ** argv){
 			contador_linha++;
 
 		}
+		imprime(arv);
 
 		// Libera memória
 		free(linha);
@@ -96,7 +94,6 @@ int main(int argc, char ** argv){
 		free(palavra);
 		fclose(in);
 
-		printf(">>>>> Arquivo carregado!\n");
 
 		// buffer que vai armazenar todo a frase que o usário digitar
 		char* buffer = (char*)malloc(sizeof(char)*128);
@@ -108,7 +105,8 @@ int main(int argc, char ** argv){
 		char* cmd = (char*)malloc(sizeof(char)*6);
 		// controlador de índice
 
-		int num_comparacoes = 0;		
+		int num_comparacoes = 0;
+		No* jorge;
 		
 		while(TRUE) {
 			
@@ -118,6 +116,17 @@ int main(int argc, char ** argv){
 			buffer[i] = '\0';
 			sscanf(buffer, "%s %s", cmd, palavra);
 			if(strcmp(cmd, "busca") == 0){
+				jorge = busca_AVL(arv, palavra, &num_comparacoes);
+				
+				if(jorge){
+					printf("Existem %d ocorrências da palavra '%s' na(s) seguinte(s) linha(s):\n", jorge->palavra->ocorrencias, jorge->palavra->_palavra);
+					for(int j = 0; j < jorge->palavra->linhas->size; j++){
+						printf("%05d: %s\n", jorge->palavra->linhas->list[j], linhas[jorge->palavra->linhas->list[j]]);
+					}
+				} else {
+					printf("Palavra '%s' nao encontrada.\n", palavra);
+				}
+				printf("Numero de comparacoes: %d\n", num_comparacoes);
 				
 				continue;
 			}

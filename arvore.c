@@ -248,8 +248,8 @@ Boolean insere_AVL(Arvore * arvore, Palavra* e){
 No * busca_AVL_rec(No * no, char * e, int* num_comparacoes){
 	if(no){
 		(*num_comparacoes)++;
-		if(!strcmp(no->palavra->_palavra, e)) return no;
-		if(strcmp(no->palavra->_palavra, e) < 0) return busca_AVL_rec(no->esq, e, num_comparacoes);
+		if(strcmp(no->palavra->_palavra, e) == 0) return no;
+		if(strcmp(no->palavra->_palavra, e) > 0) return busca_AVL_rec(no->esq, e, num_comparacoes);
 		return busca_AVL_rec(no->dir, e, num_comparacoes);
 	}
 
