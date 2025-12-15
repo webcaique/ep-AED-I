@@ -104,8 +104,8 @@ int main(int argc, char ** argv){
 		printf("Tipo de indice: '%s' \n", argv[2]);
 		printf("Numero de linhas no arquivo: %d \n", contador_linha);
 		printf("Total de palavras unicas indexadas: %d \n", contador_palavra);
-		// if(arv) printf("Altura da arvore: %d\n", arv->raiz->altura);
-		// else if(lista) printf("Tamanho da lista: %d\n",lista->tamanho);
+		if(arv->raiz != NULL) printf("Altura da arvore: %d\n", arv->raiz->altura);
+		else if(lista) printf("Tamanho da lista: %d\n",lista->tamanho);
 		printf("Numero de comparacoes realizadas para a construcao do indice: %d \n", num_comparacoes);
 
 
@@ -137,6 +137,7 @@ int main(int argc, char ** argv){
 			for(i = 0; buffer[i] != '\n'; i++);
 			buffer[i] = '\0';
 			sscanf(buffer, "%s %s", cmd, palavra);
+			
 			if(strcmp(cmd, "busca") == 0){
 				if(strcmp(argv[2], "arvore") == 0) {
 					jorge = busca_AVL(arv, palavra, &num_comparacoes);
@@ -167,8 +168,8 @@ int main(int argc, char ** argv){
 				
 				continue;
 			}
-
 			if(strcmp("fim", cmd) == 0) break;
+
 			printf("Opcao invalida!\n");
 		}
 
