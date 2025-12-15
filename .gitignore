@@ -2,3 +2,6 @@
 *.out
 test
 ep-aed-1
+*.o
+*test*
+*ep*

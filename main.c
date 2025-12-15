@@ -30,34 +30,33 @@ int main(int argc, char ** argv){
 
 	if(argc == 3) {
 
-		in = fopen(argv[1], "r"); // Abri o arquivo para leitura
+		in = fopen(argv[1], "r"); /*Abri o arquivo para leitura*/
 
 
-		contador_linha = 0;
- 		linha = (char *) malloc((TAMANHO + 1) * sizeof(char));
-		ListaSequencial* lista = cria_lista();
+		contador_linha = 0; /*inicializa o contado de linhas*/
+ 		linha = (char *) malloc((TAMANHO + 1) * sizeof(char)); /*define o tamanho da "linha"*/
 
-		// Laço vai executar até ler todo o arquivo, em que vai passar cada linha na variável "linha"
+		/*Laço vai executar até ler todo o arquivo, em que vai passar cada linha na variável "linha"*/
 		while(in && fgets(linha, TAMANHO, in)){
 			
 			if( (quebra_de_linha = strrchr(linha, '\n')) ) *quebra_de_linha = 0;
 
-			//printf("linha %03d: '%s'\n", contador_linha + 1, linha);
+			/*rintf("linha %03d: '%s'\n", contador_linha + 1, linha);*/
 
-			// fazemos uma copia do endereço que corresponde ao array de chars 
-			// usado para armazenar cada linha lida do arquivo pois a função 'strsep' 
-			// modifica o endereço do ponteiro a cada chamada feita a esta função (e 
-			// não queremos que 'linha' deixe de apontar para o inicio do array).
+			/*fazemos uma copia do endereço que corresponde ao array de chars */
+			/*usado para armazenar cada linha lida do arquivo pois a função 'strsep' */
+			/*modifica o endereço do ponteiro a cada chamada feita a esta função (e */
+			/*não queremos que 'linha' deixe de apontar para o inicio do array).*/
 
 			copia_ponteiro_linha = linha;
 
-			// realoca o tamanho da vetor das linhas para cada linha adicional
+			/*realoca o tamanho da vetor das linhas para cada linha adicional*/
 			linhas = (char**)realloc(linhas,sizeof(char*)*(contador_linha+1));
 
-			// aloca o tamanho exato da linha para cada local do vetor
+			/*aloca o tamanho exato da linha para cada local do vetor*/
 			linhas[contador_linha] = (char*)malloc(sizeof(char)*(((int)strlen(linha))+1));
 
-			// cópia da string
+			/*cópia da string*/
 			strcpy(linhas[contador_linha], linha);
 
 			// Irá ignorar barra(/) e travessão(-) no começo da cópia
@@ -97,20 +96,20 @@ int main(int argc, char ** argv){
 		}
 		imprime(arv);
 
-		// Libera memória
+		/*Libera memória*/
 		free(linha);
 		free(copia_ponteiro_linha);
 		free(palavra);
 		fclose(in);
 
 
-		// buffer que vai armazenar todo a frase que o usário digitar
+		/*buffer que vai armazenar todo a frase que o usário digitar*/
 		char* buffer = (char*)malloc(sizeof(char)*128);
 		// busca algo
 
 		palavra = (char*)malloc(sizeof(char)*32);
 		
-		// Armazena o comando a ser digitado pelo usuário ("busca", "fim")
+		/*Armazena o comando a ser digitado pelo usuário ("busca", "fim")*/
 		char* cmd = (char*)malloc(sizeof(char)*6);
 		// controlador de índice
 

@@ -14,10 +14,10 @@ Arvore* criar_arvore(){
     return arv;
 }
 
-//------------------ Impressão da árvore ------------------//
+/*------------------ Impressão da árvore ------------------*/
 void imprime_rec(No * no){
 
-	// percurso in-ordem para a impressão dos elementos
+	/*// percurso in-ordem para a impressão dos elementos*/
 
 	if(no){
 		imprime_rec(no->esq);
@@ -33,7 +33,7 @@ void imprime(Arvore * arvore){
 	printf("\n");
 }
 
-//--------------- Balanço --------------------//
+/*--------------- Balanço --------------------*/
 int max(int a, int b){
 
 	return a > b ? a : b;
@@ -49,7 +49,7 @@ int balanco(No * no){
 
 void atualiza_altura(No * no){
 
-	// assuminos que todos os nós na (sub)arvore definida por 'no' já estão com suas alturas atualizadas.
+	/*// assuminos que todos os nós na (sub)arvore definida por 'no' já estão com suas alturas atualizadas.*/
 
 	if(no->esq && no->dir) no->altura = max(no->esq->altura, no->dir->altura) + 1;
 	else if(no->dir) no->altura = no->dir->altura + 1;
@@ -62,14 +62,14 @@ No * rotacaoL(No * p){
 	No * v;
 	No * u = p->esq;
 		
-	if(balanco(u) == -1) { // rotação LL
+	if(balanco(u) == -1) { /*// rotação LL*/
 
 		p->esq = u->dir;
 		u->dir = p;
 		p->altura -= 2;
 		return u;
 	}
-	else if(balanco(u) == 1) { // rotação LR
+	else if(balanco(u) == 1) { /*// rotação LR*/
 	
 		v = u->dir;
 
@@ -93,14 +93,14 @@ No * rotacaoR(No * p){
 	No * v;
 	No * u = p->dir;
 		
-	if(balanco(u) == 1) { // rotação RR
+	if(balanco(u) == 1) { /*// rotação RR*/
 
 		p->dir = u->esq;
 		u->esq = p;
 		p->altura -= 2;
 		return u;
 	}
-	else if(balanco(u) == -1) { // rotação RL
+	else if(balanco(u) == -1) { /*// rotação RL*/
 	
 		v = u->esq;
 
@@ -119,7 +119,7 @@ No * rotacaoR(No * p){
 	return NULL;
 }
 
-//------------ INSERÇÃO ----------------------//
+/*------------ INSERÇÃO ----------------------*/
 
 Boolean busca_binaria(int* v, int e, int ini, int fim){
 	if(fim < ini) return FALSE;  
