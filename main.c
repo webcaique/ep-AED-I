@@ -23,7 +23,10 @@ int main(int argc, char ** argv){
 	int i;
 	
 
-	Arvore* arv = criar_arvore();
+	Arvore* arv;
+	ListaSequencial* lista;
+	if(strcmp(argv[2], "arvore")) arv = criar_arvore();
+	else if(strcmp(argv[2], "lista")) lista = cria_lista();
 
 	if(argc == 3) {
 
@@ -113,6 +116,7 @@ int main(int argc, char ** argv){
 
 		int num_comparacoes = 0;
 		No* jorge;
+		Palavra* busc;
 		
 		while(TRUE) {
 			
@@ -122,12 +126,21 @@ int main(int argc, char ** argv){
 			buffer[i] = '\0';
 			sscanf(buffer, "%s %s", cmd, palavra);
 			if(strcmp(cmd, "busca") == 0){
-				jorge = busca_AVL(arv, palavra, &num_comparacoes);
+				if(strcmp(argv[2], "arvore") == 0) {
+					jorge = busca_AVL(arv, palavra, &num_comparacoes);
+					if(jorge) busc = jorge->palavra;
+					else busc = NULL;
+				} else if(strcmp(argv[2], "lista") == 0){
+					num_comparacoes = busca(lista, palavra);
+					if(num_comparacoes >= 0) busc = lista->array[num_comparacoes];
+					else busc = NULL;
+					num_comparacoes = lista->tamanho;
+				}
 				
-				if(jorge){
-					printf("Existem %d ocorrências da palavra '%s' na(s) seguinte(s) linha(s):\n", jorge->palavra->ocorrencias, jorge->palavra->_palavra);
-					for(int j = 0; j < jorge->palavra->linhas->size; j++){
-						printf("%05d: %s\n", jorge->palavra->linhas->list[j], linhas[jorge->palavra->linhas->list[j]]);
+				if(busc){
+					printf("Existem %d ocorrências da palavra '%s' na(s) seguinte(s) linha(s):\n", busc->ocorrencias, busc->_palavra);
+					for(int j = 0; j < busc->linhas->size; j++){
+						printf("%05d: %s\n", busc->linhas->list[j], linhas[busc->linhas->list[j]]);
 					}
 				} else {
 					printf("Palavra '%s' nao encontrada.\n", palavra);
