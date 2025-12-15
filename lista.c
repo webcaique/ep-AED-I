@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lista.h"
+#include "defines.h"
 
 ListaSequencial * cria_lista(){
 	

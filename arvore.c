@@ -4,7 +4,7 @@
 #include <math.h>
 #include <ctype.h>
 #include "arvore.h"
-
+#include "defines.h"
 //------------------ Criação da árvore ------------------//
 Arvore* criar_arvore(){
     Arvore* arv = (Arvore*)malloc(sizeof(Arvore));
@@ -233,12 +233,12 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 Boolean insere_AVL(Arvore * arvore, Palavra* e){
 
 	No * novo = (No *) malloc(sizeof(No));
-
+	
 	novo->palavra = e;
 	novo->altura = 0;
 	novo->dir = NULL;
 	novo->esq = NULL;
-
+	
 	if(arvore->raiz) return insere_AVL_rec(arvore, arvore->raiz, NULL, novo);
 		
 	arvore->raiz = novo;

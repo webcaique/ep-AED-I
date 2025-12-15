@@ -33,4 +33,4 @@ main.o: main.c $(H_SOURCE)
 	$(CC) -o $@ $< $(CC_FLAGS)
 
 clean:
-	rm *.o
+	@ rm *.o

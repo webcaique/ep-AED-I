@@ -1,3 +1,5 @@
+#ifndef ESTRUTURA
+#define ESTRUTURA
 #define TRUE 1
 #define FALSE 0
 
@@ -15,3 +17,4 @@ typedef struct {
     ListaLinhas* linhas;
     int ocorrencias;
 } Palavra;
+#endif

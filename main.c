@@ -4,7 +4,6 @@
 #include <math.h>
 #include "defines.h"
 #include "arvore.h"
-//#include "arvore.h"
 #include "lista.h"
 
 #define TAMANHO 10000
@@ -25,12 +24,15 @@ int main(int argc, char ** argv){
 
 	Arvore* arv;
 	ListaSequencial* lista;
-	if(strcmp(argv[2], "arvore")) arv = criar_arvore();
-	else if(strcmp(argv[2], "lista")) lista = cria_lista();
-
+	
+	
 	if(argc == 3) {
-
+		// if(strcmp(argv[2], "arvore")) arv = criar_arvore();
+		// else if(strcmp(argv[2], "lista")) lista = cria_lista();
+		arv = criar_arvore();
+		lista = cria_lista();
 		in = fopen(argv[1], "r"); /*Abri o arquivo para leitura*/
+		
 
 
 		contador_linha = 0; /*inicializa o contado de linhas*/
@@ -84,17 +86,19 @@ int main(int argc, char ** argv){
 				pal->linhas->size = 1;
 				pal->ocorrencias = 1;
 
+				
 				if(strcmp(argv[2], "lista") == 0){
-					insere_lista(lista,pal);
+					insere_lista(lista, pal);
 				} else if(strcmp(argv[2], "arvore") == 0){
 					insere_AVL(arv, pal);
 				}
+
 			}
 
 			contador_linha++;
 
 		}
-		imprime(arv);
+		
 
 		/*Libera memória*/
 		free(linha);
