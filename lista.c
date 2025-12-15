@@ -30,17 +30,19 @@ int busca(ListaSequencial * lista, char* e){
 	return -1; // caso não ache, usar o tamanho para indicar a quantidade de comparações
 }
 
-Boolean insere_lista(ListaSequencial * lista, Palavra* e){
+Boolean insere_lista(ListaSequencial * lista, Palavra* e, int* num_comparacoes){
 
 	int i;
-
-	if(i = busca(lista, e->_palavra) >= 0){
+	
+	(*num_comparacoes)++;
+	if((i = busca(lista, e->_palavra)) >= 0){
 		if(lista->array[i]->linhas->list[lista->array[i]->linhas->size-1] < e->linhas->list[0]){
 			lista->array[i]->linhas->list = (int*)realloc(lista->array[i]->linhas->list, sizeof(int)*(lista->array[i]->linhas->size+1));
 			lista->array[i]->linhas->list[lista->array[i]->linhas->size] = e->linhas->list[0]; 	
 			lista->array[i]->linhas->size++;
 		}
 		lista->array[i]->ocorrencias++;
+		
 		free(e->linhas->list);
 		free(e->linhas);
 		free(e -> _palavra);

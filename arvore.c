@@ -129,18 +129,19 @@ Boolean busca_binaria(int* v, int e, int ini, int fim){
 	return busca_binaria(v, e, meio+1, fim);
 }
 
-Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
+Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo, int* num_comparacoes){
 
 	Boolean r;
 	No * rot;
 
+	(*num_comparacoes)++;
 	if(strcmp(novo->palavra->_palavra, raiz->palavra->_palavra) != 0){
 
 		if(strcmp(novo->palavra->_palavra, raiz->palavra->_palavra) < 0){
 
 			if(raiz->esq){
 
-				r = insere_AVL_rec(arvore, raiz->esq, raiz, novo);
+				r = insere_AVL_rec(arvore, raiz->esq, raiz, novo, num_comparacoes);
 				atualiza_altura(raiz);
 			
 				if(abs(balanco(raiz)) >= 2) {	
@@ -164,7 +165,7 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 		else{
 			if(raiz->dir){
 		
-				r = insere_AVL_rec(arvore, raiz->dir, raiz, novo);
+				r = insere_AVL_rec(arvore, raiz->dir, raiz, novo, num_comparacoes);
 				atualiza_altura(raiz);
 			
 				if(abs(balanco(raiz)) >= 2){
@@ -230,7 +231,7 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo){
 	return FALSE;
 }
 
-Boolean insere_AVL(Arvore * arvore, Palavra* e){
+Boolean insere_AVL(Arvore * arvore, Palavra* e, int* num_comparacoes){
 
 	No * novo = (No *) malloc(sizeof(No));
 	
@@ -239,7 +240,7 @@ Boolean insere_AVL(Arvore * arvore, Palavra* e){
 	novo->dir = NULL;
 	novo->esq = NULL;
 	
-	if(arvore->raiz) return insere_AVL_rec(arvore, arvore->raiz, NULL, novo);
+	if(arvore->raiz) return insere_AVL_rec(arvore, arvore->raiz, NULL, novo, num_comparacoes);
 		
 	arvore->raiz = novo;
 	return TRUE;

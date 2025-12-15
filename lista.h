@@ -10,4 +10,4 @@ typedef struct {
 ListaSequencial * cria_lista();
 void destroi_lista(ListaSequencial * lista);
 int busca(ListaSequencial * lista, char* e);
-Boolean insere_lista(ListaSequencial * lista, Palavra* e);
+Boolean insere_lista(ListaSequencial * lista, Palavra* e, int* num_comparacoes);

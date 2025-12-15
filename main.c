@@ -20,15 +20,15 @@ int main(int argc, char ** argv){
 	char * palavra;
 	int contador_linha;
 	int i;
+	int contador_palavra = 0;
+	int num_comparacoes = 0;
 	
 
-	Arvore* arv;
-	ListaSequencial* lista;
+	Arvore* arv = NULL;
+	ListaSequencial* lista = NULL;
 	
 	
 	if(argc == 3) {
-		// if(strcmp(argv[2], "arvore")) arv = criar_arvore();
-		// else if(strcmp(argv[2], "lista")) lista = cria_lista();
 		arv = criar_arvore();
 		lista = cria_lista();
 		in = fopen(argv[1], "r"); /*Abri o arquivo para leitura*/
@@ -88,17 +88,26 @@ int main(int argc, char ** argv){
 
 				
 				if(strcmp(argv[2], "lista") == 0){
-					insere_lista(lista, pal);
+					insere_lista(lista, pal, &num_comparacoes);
 				} else if(strcmp(argv[2], "arvore") == 0){
-					insere_AVL(arv, pal);
+					insere_AVL(arv, pal, &num_comparacoes);
 				}
 
+				contador_palavra++;
 			}
 
 			contador_linha++;
 
 		}
 		
+		printf("Arquivo: '%s' \n", argv[1]);
+		printf("Tipo de indice: '%s' \n", argv[2]);
+		printf("Numero de linhas no arquivo: %d \n", contador_linha);
+		printf("Total de palavras unicas indexadas: %d \n", contador_palavra);
+		// if(arv) printf("Altura da arvore: %d\n", arv->raiz->altura);
+		// else if(lista) printf("Tamanho da lista: %d\n",lista->tamanho);
+		printf("Numero de comparacoes realizadas para a construcao do indice: %d \n", num_comparacoes);
+
 
 		/*Libera memória*/
 		free(linha);
@@ -117,7 +126,7 @@ int main(int argc, char ** argv){
 		char* cmd = (char*)malloc(sizeof(char)*6);
 		// controlador de índice
 
-		int num_comparacoes = 0;
+		num_comparacoes = 0;
 		No* jorge;
 		Palavra* busc;
 		
@@ -135,9 +144,15 @@ int main(int argc, char ** argv){
 					else busc = NULL;
 				} else if(strcmp(argv[2], "lista") == 0){
 					num_comparacoes = busca(lista, palavra);
-					if(num_comparacoes >= 0) busc = lista->array[num_comparacoes];
-					else busc = NULL;
-					num_comparacoes = lista->tamanho;
+					if(num_comparacoes >= 0){
+						busc = lista->array[num_comparacoes];
+						num_comparacoes++;
+					}
+					else {
+						busc = NULL;
+						num_comparacoes = lista->tamanho;
+					}
+					
 				}
 				
 				if(busc){
