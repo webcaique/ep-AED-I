@@ -17,7 +17,7 @@ Arvore* criar_arvore(){
 /*------------------ Impressão da árvore ------------------*/
 void imprime_rec(No * no){
 
-	/*// percurso in-ordem para a impressão dos elementos*/
+	/*percurso in-ordem para a impressão dos elementos*/
 
 	if(no){
 		imprime_rec(no->esq);
@@ -35,12 +35,11 @@ void imprime(Arvore * arvore){
 
 /*--------------- Balanço --------------------*/
 int max(int a, int b){
-
 	return a > b ? a : b;
 }
 
 int balanco(No * no){
-
+	//Retorna o balanço da subárvore
 	if(no->esq && no->dir) return (no->dir->altura) - (no->esq->altura);
 	if(no->esq) return -1 * (no->esq->altura + 1);
 	if(no->dir) return no->dir->altura + 1;
@@ -49,7 +48,8 @@ int balanco(No * no){
 
 void atualiza_altura(No * no){
 
-	/*// assuminos que todos os nós na (sub)arvore definida por 'no' já estão com suas alturas atualizadas.*/
+	/*assuminos que todos os nós na (sub)arvore definida por 'no' já estão com suas alturas atualizadas.*/
+	// Atualiza a altura das subárvores
 
 	if(no->esq && no->dir) no->altura = max(no->esq->altura, no->dir->altura) + 1;
 	else if(no->dir) no->altura = no->dir->altura + 1;
@@ -62,14 +62,14 @@ No * rotacaoL(No * p){
 	No * v;
 	No * u = p->esq;
 		
-	if(balanco(u) == -1) { /*// rotação LL*/
+	if(balanco(u) == -1) { /*rotação LL*/
 
 		p->esq = u->dir;
 		u->dir = p;
 		p->altura -= 2;
 		return u;
 	}
-	else if(balanco(u) == 1) { /*// rotação LR*/
+	else if(balanco(u) == 1) { /*rotação LR*/
 	
 		v = u->dir;
 
@@ -93,14 +93,14 @@ No * rotacaoR(No * p){
 	No * v;
 	No * u = p->dir;
 		
-	if(balanco(u) == 1) { /*// rotação RR*/
+	if(balanco(u) == 1) { /*rotação RR*/
 
 		p->dir = u->esq;
 		u->esq = p;
 		p->altura -= 2;
 		return u;
 	}
-	else if(balanco(u) == -1) { /*// rotação RL*/
+	else if(balanco(u) == -1) { /*rotação RL*/
 	
 		v = u->esq;
 
@@ -120,16 +120,7 @@ No * rotacaoR(No * p){
 }
 
 /*------------ INSERÇÃO ----------------------*/
-
-Boolean busca_binaria(int* v, int e, int ini, int fim){
-	if(fim < ini) return FALSE;  
-	int meio = (fim-ini)/2;
-	if(v[meio] == e) return TRUE;
-	if(v[meio] < e) return busca_binaria(v, e, ini, meio-1);
-	return busca_binaria(v, e, meio+1, fim);
-}
-
-Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo, int* num_comparacoes){
+Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo, int* num_comparacoes, int* contador_palavra){
 
 	Boolean r;
 	No * rot;
@@ -141,7 +132,7 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo, int* num
 
 			if(raiz->esq){
 
-				r = insere_AVL_rec(arvore, raiz->esq, raiz, novo, num_comparacoes);
+				r = insere_AVL_rec(arvore, raiz->esq, raiz, novo, num_comparacoes, contador_palavra);
 				atualiza_altura(raiz);
 			
 				if(abs(balanco(raiz)) >= 2) {	
@@ -165,7 +156,7 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo, int* num
 		else{
 			if(raiz->dir){
 		
-				r = insere_AVL_rec(arvore, raiz->dir, raiz, novo, num_comparacoes);
+				r = insere_AVL_rec(arvore, raiz->dir, raiz, novo, num_comparacoes, contador_palavra);
 				atualiza_altura(raiz);
 			
 				if(abs(balanco(raiz)) >= 2){
@@ -190,31 +181,8 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo, int* num
 		return TRUE;
 	}
 	else {
-		/*
-				_palavra = golfe
-				linhas
-				 list = [1,2, 4]
-				 size = 3
-				ocorrencias =>3
-
-				_palavra = golfe
-				linhas
-				 list = [4]
-				 size = 1
-				ocorrencias =>1
-		 */
-		/*
-		raiz => a nó;
-		raiz->palavra => estrutra Palavra
-		raiz->palavra->linhas => a estruturas ListaLinhas
-		raiz->palavra->linhas->list => o vetor que vai armazenar as linhas em que a palavra aparece
-		*/
-		/*
-		raiz->palavra->linhas->list => lista das linhas que a palavra apareceu
-		novo->palavra->linhas->list[0] => a linha onde a palavra foi encontrada denovo
-		0, raiz->palavra->linhas->size => início e fim da lista das linhas (tamanho), respectivamente
-		*/
-	
+		(*contador_palavra)--;
+		// Verifica se a linha já está armazenado na estrutura
 		if(raiz->palavra->linhas->list[raiz->palavra->linhas->size] != novo->palavra->linhas->list[0]){
 			(raiz->palavra->linhas->size)++;
 			raiz->palavra->linhas->list = (int*)realloc(raiz->palavra->linhas->list, ((int)sizeof(int))*(raiz->palavra->linhas->size));
@@ -232,7 +200,7 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo, int* num
 	return FALSE;
 }
 
-Boolean insere_AVL(Arvore * arvore, Palavra* e, int* num_comparacoes){
+Boolean insere_AVL(Arvore * arvore, Palavra* e, int* num_comparacoes, int* contador_palavra){
 
 	No * novo = (No *) malloc(sizeof(No));
 	
@@ -240,8 +208,9 @@ Boolean insere_AVL(Arvore * arvore, Palavra* e, int* num_comparacoes){
 	novo->altura = 0;
 	novo->dir = NULL;
 	novo->esq = NULL;
+	(*contador_palavra)++;
 	
-	if(arvore->raiz) return insere_AVL_rec(arvore, arvore->raiz, NULL, novo, num_comparacoes);
+	if(arvore->raiz) return insere_AVL_rec(arvore, arvore->raiz, NULL, novo, num_comparacoes, contador_palavra);
 		
 	arvore->raiz = novo;
 	return TRUE;

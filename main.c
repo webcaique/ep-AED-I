@@ -18,11 +18,10 @@ int main(int argc, char ** argv){
 	char * copia_ponteiro_linha;
 	char * quebra_de_linha;
 	char * palavra;
-	int contador_linha;
-	int i;
 	int contador_palavra = 0;
 	int num_comparacoes = 0;
-	int p;
+	int contador_linha;
+	int i;
 
 	Arvore* arv = NULL;
 	ListaSequencial* lista = NULL;
@@ -64,39 +63,31 @@ int main(int argc, char ** argv){
 			// Irá ignorar barra(/) e travessão(-) no começo da cópia
 			while( (palavra = strsep(&copia_ponteiro_linha, " /.-,():")) ){
 				// caso termine em um espaço em branco, ele volta o loop para a próxima palavra
-				if(strcmp(palavra, "") == 0) continue;
-				for(p = 0; palavra[p] != '\0' && palavra[p] != '\n'; p++);
-				if(palavra[p] == '\n') printf("%s", palavra);
-				
+				if(strcmp(palavra, "") == 0) continue;				
 
-				// Caso encontre a primeira letra em caixa alta, ela é reformatada para caixa baixa
-				for(int i = 0; palavra[i] != '\0'; i++){
+				// Formata a palavra para caixa baixa
+				for(i = 0; palavra[i] != '\0'; i++){
 					if((int)palavra[i] < 91 && (int)palavra[i] > 64) palavra[i] += 32;
 				}
 
-				// antes de guardar a palavra em algum tipo de estrutura usada
-				// para implementar o índice, será necessário fazer uma copia
-				// da mesma, uma vez que o ponteiro 'palavra' aponta para uma 
-				// substring dentro da string 'linha', e a cada nova linha lida
-				// o conteúdo da linha anterior é sobreescrito.
-
-				Palavra* pal = (Palavra*)malloc(((int)sizeof(Palavra)));
-				pal->_palavra = (char*)malloc(((int)sizeof(char)*((int)strlen(palavra)+1)));
-				strcpy(pal->_palavra, palavra);
-				pal->linhas = (ListaLinhas*)malloc(((int)sizeof(ListaLinhas)));
-				pal->linhas->list = (int*)malloc(((int)sizeof(int)));
-				pal->linhas->list[0] = contador_linha;
-				pal->linhas->size = 1;
-				pal->ocorrencias = 1;
+				// Criação da estrutra palavra
+				Palavra* nova_palavra = (Palavra*)malloc(((int)sizeof(Palavra)));
+				nova_palavra->_palavra = (char*)malloc(((int)sizeof(char)*((int)strlen(palavra)+1)));
+				strcpy(nova_palavra->_palavra, palavra);
+				nova_palavra->linhas = (ListaLinhas*)malloc(((int)sizeof(ListaLinhas)));
+				nova_palavra->linhas->list = (int*)malloc(((int)sizeof(int)));
+				nova_palavra->linhas->list[0] = contador_linha;
+				nova_palavra->linhas->size = 1;
+				nova_palavra->ocorrencias = 1;
 
 				
 				if(strcmp(argv[2], "lista") == 0){
-					insere_lista(lista, pal, &num_comparacoes);
+					insere_lista(lista, nova_palavra, &num_comparacoes, &contador_palavra);
 				} else if(strcmp(argv[2], "arvore") == 0){
-					insere_AVL(arv, pal, &num_comparacoes);
+					insere_AVL(arv, nova_palavra, &num_comparacoes, &contador_palavra);
 				}
 
-				contador_palavra++;
+				
 			}
 
 			contador_linha++;
@@ -108,7 +99,6 @@ int main(int argc, char ** argv){
 		printf("Numero de linhas no arquivo: %d \n", contador_linha);
 		printf("Total de palavras unicas indexadas: %d \n", contador_palavra);
 		if(arv->raiz != NULL) printf("Altura da arvore: %d\n", arv->raiz->altura);
-		else if(lista) printf("Tamanho da lista: %d\n",lista->tamanho);
 		printf("Numero de comparacoes realizadas para a construcao do indice: %d \n", num_comparacoes);
 
 
@@ -121,52 +111,57 @@ int main(int argc, char ** argv){
 
 		/*buffer que vai armazenar todo a frase que o usário digitar*/
 		char* buffer = (char*)malloc(sizeof(char)*128);
-		// busca algo
-
+		
 		palavra = (char*)malloc(sizeof(char)*32);
 		
 		/*Armazena o comando a ser digitado pelo usuário ("busca", "fim")*/
 		char* cmd = (char*)malloc(sizeof(char)*6);
 		// controlador de índice
 
-		num_comparacoes = 0;
-		No* jorge;
-		Palavra* busc;
+		num_comparacoes = 0; // "reiniciar o número de comparações"
+		No* nodo; // para o nó da árvore
+		Palavra* busca_palavra; // para capturar a palavra
 		
+		// Loop para o funcionamento do programa
 		while(TRUE) {
 			
 			printf("> ");
 			fgets(buffer, 128, stdin);
 			for(i = 0; buffer[i] != '\n'; i++);
 			buffer[i] = '\0';
-			for(int i = 0; buffer[i] != '\0'; i++){
+			// Formata a palavra para minúscula
+			for(i = 0; buffer[i] != '\0'; i++){
 				if((int)buffer[i] < 91 && (int)buffer[i] > 64) buffer[i] += 32;
 			}
 			
-			sscanf(buffer, "%s %s", cmd, palavra);
+			sscanf(buffer, "%s %s", cmd, palavra); // separação do comando a palavra que se queira busca
 			
 			if(strcmp(cmd, "busca") == 0){
 				if(strcmp(argv[2], "arvore") == 0) {
-					jorge = busca_AVL(arv, palavra, &num_comparacoes);
-					if(jorge) busc = jorge->palavra;
-					else busc = NULL;
+					nodo = busca_AVL(arv, palavra, &num_comparacoes);
+					if(nodo) busca_palavra = nodo->palavra;
+					else busca_palavra = NULL;
 				} else if(strcmp(argv[2], "lista") == 0){
+					/*
+					Na lista, o índice que a palavra está é quantidade de vezes que teve que comparar a palavra +1.
+					Caso não encontre, o número de comparações é o tamanho da lista.
+					*/
 					num_comparacoes = busca(lista, palavra);
 					if(num_comparacoes >= 0){
-						busc = lista->array[num_comparacoes];
+						busca_palavra = lista->array[num_comparacoes];
 						num_comparacoes++;
 					}
 					else {
-						busc = NULL;
+						busca_palavra = NULL;
 						num_comparacoes = lista->tamanho;
 					}
 					
 				}
 				
-				if(busc){
-					printf("Existem %d ocorrências da palavra '%s' na(s) seguinte(s) linha(s):\n", busc->ocorrencias, busc->_palavra);
-					for(int j = 0; j < busc->linhas->size; j++){
-						printf("%05d: %s\n", busc->linhas->list[j]+1, linhas[busc->linhas->list[j]]);
+				if(busca_palavra){
+					printf("Existem %d ocorrências da palavra '%s' na(s) seguinte(s) linha(s):\n", busca_palavra->ocorrencias, busca_palavra->_palavra);
+					for(int j = 0; j < busca_palavra->linhas->size; j++){
+						printf("%05d: %s\n", busca_palavra->linhas->list[j]+1, linhas[busca_palavra->linhas->list[j]]);
 					}
 				} else {
 					printf("Palavra '%s' nao encontrada.\n", palavra);
