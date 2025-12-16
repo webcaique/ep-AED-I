@@ -134,12 +134,12 @@ int main(int argc, char ** argv){
 		char* cmd = (char*)malloc(sizeof(char)*6);
 		// controlador de índice
 
-		num_comparacoes = 0; // "reiniciar o número de comparações"
 		No* nodo; // para o nó da árvore
 		Palavra* busca_palavra; // para capturar a palavra
 		
 		// Loop para o funcionamento do programa
 		while(TRUE) {
+			num_comparacoes = 0; // "reiniciar o número de comparações"
 			
 			printf("> ");
 			fgets(buffer, 128, stdin);
