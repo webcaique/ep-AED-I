@@ -183,7 +183,7 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo, int* num
 	else {
 		(*contador_palavra)--;
 		// Verifica se a linha já está armazenado na estrutura
-		if(raiz->palavra->linhas->list[raiz->palavra->linhas->size] != novo->palavra->linhas->list[0]){
+		if(raiz->palavra->linhas->list[raiz->palavra->linhas->size-1] != novo->palavra->linhas->list[0]){
 			(raiz->palavra->linhas->size)++;
 			raiz->palavra->linhas->list = (int*)realloc(raiz->palavra->linhas->list, ((int)sizeof(int))*(raiz->palavra->linhas->size));
 			raiz->palavra->linhas->list[(raiz->palavra->linhas->size)-1] = novo->palavra->linhas->list[0];
