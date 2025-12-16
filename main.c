@@ -85,7 +85,6 @@ int main(int argc, char ** argv){
 				for(i = 0; palavra[i] != '\0'; i++){
 					if((int)palavra[i] < 91 && (int)palavra[i] > 64) palavra[i] += 32;
 				}
-				if(contador_linha == 20) printf("\n'%s'\n", palavra);	
 
 				// Criação da estrutra palavra
 				Palavra* nova_palavra = (Palavra*)malloc(((int)sizeof(Palavra)));
