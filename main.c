@@ -31,8 +31,24 @@ int main(int argc, char ** argv){
 		arv = criar_arvore();
 		lista = cria_lista();
 		in = fopen(argv[1], "r"); /*Abri o arquivo para leitura*/
-		
-
+		if(!in){
+			printf("Segundo argumento inválido!\n");
+			printf("Arquivo não encontrado!\n");
+			return -1;
+		}
+		if(!strcmp(argv[2], "arvore")){
+			free(lista);
+			lista = NULL;
+		}
+		else if(!strcmp(argv[2], "lista")) {
+			free(arv);
+			arv = NULL;
+		}
+		else {
+			printf("Terceiro argumento inválido!\n");
+			printf("Digite ou lista ou arvore!\n");
+			return -1;
+		}
 
 		contador_linha = 0; /*inicializa o contado de linhas*/
  		linha = (char *) malloc((TAMANHO + 1) * sizeof(char)); /*define o tamanho da "linha"*/
@@ -61,14 +77,15 @@ int main(int argc, char ** argv){
 			strcpy(linhas[contador_linha], linha);
 
 			// Irá ignorar barra(/) e travessão(-) no começo da cópia
-			while( (palavra = strsep(&copia_ponteiro_linha, " /.-,():")) ){
+			while( (palavra = strsep(&copia_ponteiro_linha, " /.-,():'\"!#$£%%&*+_:;<>?@[]\\^~`{}|\n")) ){
 				// caso termine em um espaço em branco, ele volta o loop para a próxima palavra
-				if(strcmp(palavra, "") == 0) continue;				
+				if(strcmp(palavra, "") == 0) continue;			
 
 				// Formata a palavra para caixa baixa
 				for(i = 0; palavra[i] != '\0'; i++){
 					if((int)palavra[i] < 91 && (int)palavra[i] > 64) palavra[i] += 32;
 				}
+				if(contador_linha == 20) printf("\n'%s'\n", palavra);	
 
 				// Criação da estrutra palavra
 				Palavra* nova_palavra = (Palavra*)malloc(((int)sizeof(Palavra)));
@@ -98,7 +115,7 @@ int main(int argc, char ** argv){
 		printf("Tipo de indice: '%s' \n", argv[2]);
 		printf("Numero de linhas no arquivo: %d \n", contador_linha);
 		printf("Total de palavras unicas indexadas: %d \n", contador_palavra);
-		if(arv->raiz != NULL) printf("Altura da arvore: %d\n", arv->raiz->altura);
+		if(arv != NULL) printf("Altura da arvore: %d\n", arv->raiz->altura);
 		printf("Numero de comparacoes realizadas para a construcao do indice: %d \n", num_comparacoes);
 
 

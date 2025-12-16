@@ -37,7 +37,7 @@ Boolean insere_lista(ListaSequencial * lista, Palavra* e, int* num_comparacoes, 
 	(*num_comparacoes)++;
 	//verifica se há já a palavra na estrutura
 	if((i = busca(lista, e->_palavra)) >= 0){
-		(*num_comparacoes)+= i > 0? i: lista->tamanho;
+		(*num_comparacoes)+= i;
 		// verifica se há nova linha
 		if(lista->array[i]->linhas->list[lista->array[i]->linhas->size-1] < e->linhas->list[0]){
 			lista->array[i]->linhas->list = (int*)realloc(lista->array[i]->linhas->list, sizeof(int)*(lista->array[i]->linhas->size+1));
@@ -53,6 +53,7 @@ Boolean insere_lista(ListaSequencial * lista, Palavra* e, int* num_comparacoes, 
 		
 		return TRUE;
 	}
+	(*num_comparacoes)+= lista->tamanho;
 	(*contador_palavra)++;
 
 	lista->tamanho++;
