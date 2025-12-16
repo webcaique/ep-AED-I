@@ -22,7 +22,7 @@ int main(int argc, char ** argv){
 	int i;
 	int contador_palavra = 0;
 	int num_comparacoes = 0;
-	
+	int p;
 
 	Arvore* arv = NULL;
 	ListaSequencial* lista = NULL;
@@ -62,13 +62,16 @@ int main(int argc, char ** argv){
 			strcpy(linhas[contador_linha], linha);
 
 			// Irá ignorar barra(/) e travessão(-) no começo da cópia
-			while( (palavra = strsep(&copia_ponteiro_linha, " /.-,")) ){
+			while( (palavra = strsep(&copia_ponteiro_linha, " /.-,():")) ){
 				// caso termine em um espaço em branco, ele volta o loop para a próxima palavra
 				if(strcmp(palavra, "") == 0) continue;
+				for(p = 0; palavra[p] != '\0' && palavra[p] != '\n'; p++);
+				if(palavra[p] == '\n') printf("%s", palavra);
+				
 
 				// Caso encontre a primeira letra em caixa alta, ela é reformatada para caixa baixa
 				for(int i = 0; palavra[i] != '\0'; i++){
-					if((int)palavra[i] < 91) palavra[i] += 32;
+					if((int)palavra[i] < 91 && (int)palavra[i] > 64) palavra[i] += 32;
 				}
 
 				// antes de guardar a palavra em algum tipo de estrutura usada
@@ -136,6 +139,10 @@ int main(int argc, char ** argv){
 			fgets(buffer, 128, stdin);
 			for(i = 0; buffer[i] != '\n'; i++);
 			buffer[i] = '\0';
+			for(int i = 0; buffer[i] != '\0'; i++){
+				if((int)buffer[i] < 91 && (int)buffer[i] > 64) buffer[i] += 32;
+			}
+			
 			sscanf(buffer, "%s %s", cmd, palavra);
 			
 			if(strcmp(cmd, "busca") == 0){
@@ -159,7 +166,7 @@ int main(int argc, char ** argv){
 				if(busc){
 					printf("Existem %d ocorrências da palavra '%s' na(s) seguinte(s) linha(s):\n", busc->ocorrencias, busc->_palavra);
 					for(int j = 0; j < busc->linhas->size; j++){
-						printf("%05d: %s\n", busc->linhas->list[j], linhas[busc->linhas->list[j]]);
+						printf("%05d: %s\n", busc->linhas->list[j]+1, linhas[busc->linhas->list[j]]);
 					}
 				} else {
 					printf("Palavra '%s' nao encontrada.\n", palavra);
@@ -171,11 +178,11 @@ int main(int argc, char ** argv){
 			if(strcmp("fim", cmd) == 0) break;
 
 			printf("Opcao invalida!\n");
+			
 		}
 
 		return 0;
 	}
-
 
 	return 1;
 }

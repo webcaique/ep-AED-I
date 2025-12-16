@@ -214,7 +214,8 @@ Boolean insere_AVL_rec(Arvore * arvore, No * raiz, No * pai, No * novo, int* num
 		novo->palavra->linhas->list[0] => a linha onde a palavra foi encontrada denovo
 		0, raiz->palavra->linhas->size => início e fim da lista das linhas (tamanho), respectivamente
 		*/
-		if(!busca_binaria(raiz->palavra->linhas->list, novo->palavra->linhas->list[0], 0, raiz->palavra->linhas->size)){
+	
+		if(raiz->palavra->linhas->list[raiz->palavra->linhas->size] != novo->palavra->linhas->list[0]){
 			(raiz->palavra->linhas->size)++;
 			raiz->palavra->linhas->list = (int*)realloc(raiz->palavra->linhas->list, ((int)sizeof(int))*(raiz->palavra->linhas->size));
 			raiz->palavra->linhas->list[(raiz->palavra->linhas->size)-1] = novo->palavra->linhas->list[0];
